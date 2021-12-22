@@ -9,6 +9,7 @@ from asn1editor.interfaces.OptionalInterface import OptionalInterface
 from asn1editor.interfaces.ValueInterface import ValueInterface
 from asn1editor.view.AbstractView import AbstractView
 from asn1editor.view.AbstractViewFactory import TypeInfo, Styles
+from wx.core import CheckBox, ToggleButton
 
 ControlList = typing.Dict[str, typing.Union[wx.TextCtrl, wx.CheckBox, wx.StaticBitmap, wx.ComboBox, wx.StaticText, wx.SpinCtrl,
                                             typing.List[typing.Tuple[int, wx.CheckBox]], asn1editor.view.AbstractViewFactory.Styles,
@@ -275,10 +276,19 @@ class WxPythonBitstringView(WxPythonView, BitstringInterface):
     def __init__(self, type_info: TypeInfo, controls: ControlList, parent: wx.Window):
         super(WxPythonBitstringView, self).__init__(type_info, controls)
         self._parent = parent
+        self._controls['check_all'].Bind(wx.EVT_BUTTON, self.event)
+
+    def event(e: wx.Event, self):
+        for bit, checkbox in e._controls['checkboxes']:
+            if checkbox.GetValue():
+                checkbox.SetValue(False)
+            else:
+                checkbox.SetValue(True)
 
     def enable(self, enabled: bool):
         for _, checkbox in self._controls['checkboxes']:
             checkbox.Enable(enabled)
+        self._controls['check_all'].Enable(enabled)
 
     def get_values(self) -> typing.List[int]:
         values = []
@@ -301,7 +311,7 @@ class WxPythonBitstringView(WxPythonView, BitstringInterface):
         for _, checkbox in self._controls['checkboxes']:
             bits_sizer.Add(checkbox)
         sizer.Add(bits_sizer)
-
+        sizer.Add(self._controls['check_all'], flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL, border=2)
         return sizer
 
     def destroy(self):

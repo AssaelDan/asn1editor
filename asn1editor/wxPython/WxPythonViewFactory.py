@@ -147,6 +147,7 @@ class WxPythonViewFactory(AbstractViewFactory):
         controls = self._get_controls(type_info, icon='bitstring')
 
         checkboxes: List[Tuple[int, wx.CheckBox]] = []
+        check_all = wx.Button(self._window, label=str('all_boxes'))
 
         style = type_info.style
 
@@ -164,6 +165,7 @@ class WxPythonViewFactory(AbstractViewFactory):
                 checkboxes.append((bit, bit_checkbox))
 
         controls['checkboxes'] = checkboxes
+        controls['check_all'] = check_all
 
         view = WxPythonBitstringView(type_info, controls, self._window)
 
