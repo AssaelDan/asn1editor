@@ -6,3 +6,4 @@
 /asn1editor.egg-info/
 /test.json
 /docs/_build/
+*.pyc
