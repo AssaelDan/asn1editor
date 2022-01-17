@@ -202,7 +202,10 @@ class BitstringController(Controller):
     def model_to_view(self, model: Dict[str, Any]):
         if self._model_to_view_optional(model):
             values = []
-            bytes_, num_bits = model[self._name]
+            if isinstance(model,dict):
+                bytes_, num_bits = model[self._name]
+            else:
+                bytes_, num_bits = model
             assert num_bits == self._number_of_bits
             for bit in range(self._number_of_bits):
                 bit_index = bit % 8
