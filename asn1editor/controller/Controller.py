@@ -210,7 +210,7 @@ class BitstringController(Controller):
             for bit in range(self._number_of_bits):
                 bit_index = bit % 8
                 byte_index = bit // 8
-                if bytes_[byte_index] & (1 << bit_index):
+                if bytes_[byte_index] & (1 << (7-bit_index)):
                     values.append(bit)
             self._bitstring_interface.set_values(values)
 
@@ -221,7 +221,7 @@ class BitstringController(Controller):
             for bit in values:
                 bit_index = bit % 8
                 byte_index = bit // 8
-                bytes_[byte_index] |= (1 << bit_index)
+                bytes_[byte_index] |= (1 << (7-bit_index))
 
             return bytes_, self._number_of_bits
 

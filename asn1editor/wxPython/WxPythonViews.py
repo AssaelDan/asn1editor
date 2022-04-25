@@ -280,10 +280,8 @@ class WxPythonBitstringView(WxPythonView, BitstringInterface):
 
     def event(e: wx.Event, self):
         for bit, checkbox in e._controls['checkboxes']:
-            if checkbox.GetValue():
-                checkbox.SetValue(False)
-            else:
-                checkbox.SetValue(True)
+            current_value = checkbox.GetValue()
+            checkbox.SetValue(not current_value)
 
     def enable(self, enabled: bool):
         for _, checkbox in self._controls['checkboxes']:
